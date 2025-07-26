@@ -6,12 +6,25 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @OA\Tag(
+ *     name="Books",
+ *     description="API Endpoints untuk manajemen buku"
+ * )
+ */
+
 class BookController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     * 
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/books",
+     *     tags={"Books"},
+     *     summary="Get all books",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of books"
+     *     )
+     * )
      */
     public function index()
     {
@@ -32,11 +45,26 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/books",
+     *     tags={"Books"},
+     *     summary="Create a new book",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"judul", "penulis", "tahun_terbit", "category_id"},
+     *             @OA\Property(property="judul", type="string", example="Laravel Handbook"),
+     *             @OA\Property(property="penulis", type="string", example="Taylor Otwell"),
+     *             @OA\Property(property="tahun_terbit", type="integer", example=2024),
+     *             @OA\Property(property="jumlah_halaman", type="integer", example=900),
+     *             @OA\Property(property="category_id", type="integer", example=1),
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Book created"),
+     *     @OA\Response(response=400, description="Invalid data")
+     * )
      */
+
     public function store(Request $request)
     {
         //
@@ -73,10 +101,20 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     * 
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/books/{id}",
+     *     tags={"Books"},
+     *     summary="Get book detail by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Book ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Book data"),
+     *     @OA\Response(response=404, description="Book not found")
+     * )
      */
     public function show(Book $book)
     {
@@ -107,12 +145,32 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *     path="/api/books/{id}",
+     *     tags={"Books"},
+     *     summary="Update a book",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Book ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="judul", type="string"),
+     *             @OA\Property(property="penulis", type="string"),
+     *             @OA\Property(property="tahun_terbit", type="integer"),
+     *             @OA\Property(property="jumlah_halaman", type="integer"),
+     *             @OA\Property(property="category_id", type="integer"),
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Book updated"),
+     *     @OA\Response(response=404, description="Book not found")
+     * )
      */
+
     public function update(Request $request, Book $book)
     {
         //
@@ -152,11 +210,22 @@ class BookController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     * 
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/api/books/{id}",
+     *     tags={"Books"},
+     *     summary="Delete a book by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Book ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=204, description="Book deleted"),
+     *     @OA\Response(response=404, description="Book not found")
+     * )
      */
+
     public function destroy(Book $book)
     {
         //

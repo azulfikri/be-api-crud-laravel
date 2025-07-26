@@ -8,8 +8,17 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/categories",
+     *     tags={"Categories"},
+     *     summary="Get all categories",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of categories"
+     *     )
+     * )
      */
+
     public function index()
     {
         //
@@ -21,16 +30,26 @@ class CategoryController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/categories",
+     *     tags={"Categories"},
+     *     summary="Create a new category",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nama"},
+     *             @OA\Property(property="nama", type="string", example="Teknologi")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Category created"),
+     *     @OA\Response(response=400, description="Invalid data")
+     * )
      */
     public function store(Request $request)
     {
@@ -54,8 +73,22 @@ class CategoryController extends Controller
         }
     }
 
+
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/categories/{id}",
+     *     tags={"Categories"},
+     *     summary="Get category detail by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Category ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Category data"),
+     *     @OA\Response(response=404, description="Category not found")
+     * )
      */
     public function show(Category $category)
     {
@@ -84,8 +117,28 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/categories/{id}",
+     *     tags={"Categories"},
+     *     summary="Update a category",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Category ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="nama", type="string", example="Fiksi")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Category updated"),
+     *     @OA\Response(response=404, description="Category not found")
+     * )
      */
+
     public function update(Request $request, Category $category)
     {
         //
@@ -109,8 +162,22 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/categories/{id}",
+     *     tags={"Categories"},
+     *     summary="Delete a category by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Category ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=204, description="Category deleted"),
+     *     @OA\Response(response=404, description="Category not found")
+     * )
      */
+
     public function destroy(Category $category)
     {
         //
